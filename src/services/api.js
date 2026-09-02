@@ -49,7 +49,7 @@ export async function login(email, senha) {
   // 1) DISPARA o pedido e ESPERA a resposta chegar.
   //    `await` = "segura aqui até voltar". Sem ele você recebe uma
   //    Promise (uma promessa), não os dados.
-  const resposta = await fetch(`https://backend-drab-seven-84.vercel.app/api/usuarios/login`, {
+  const resposta = await fetch(`https://back-end-3ctec.vercel.app/api/usuarios/login`, {
     // 2) O MÉTODO diz a INTENÇÃO do pedido:
     //    GET = ler | POST = criar | PUT = atualizar | DELETE = apagar
     method: "POST",
@@ -157,8 +157,17 @@ export async function cadastrar(nome, email, senha) {
 //  🧪 Teste o erro: apague uma letra do token antes de mandar e veja o 401.
 //
 export async function listarUsuarios(token) {
-  // ↓↓↓ APAGUE ESTA LINHA E ESCREVA SEU CÓDIGO ↓↓↓
-  throw new Error("🚧 TAREFA 2 ainda não foi implementada (src/services/api.js)");
+  const resposta = await fetch(`${API_URL}/api/usuarios`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const dados = await resposta.json();
+
+  if (!resposta.ok) {
+    throw new Error(dados.mensagem || "Não foi possível carregar a lista.");
+  }
+
+  return dados.usuarios;
 }
 
 // ╔═════════════════════════════════════════════════════════════════════╗
